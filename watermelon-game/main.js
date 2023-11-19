@@ -1,4 +1,4 @@
-import {Body, Engine, Runner, Render, Bodies, World} from "matter-js";
+import {Body, Engine, Runner, Render, Bodies, World, Events} from "matter-js";
 import { FRUITS } from "./fruits.js";
 
 const engine = Engine.create();
@@ -88,7 +88,7 @@ window.onkeydown = (event) => {
     case "KeyS":
       currentBody.isSleeping = false;
       disableAction = true;
-      
+
       setTimeout(() => {
         addFruit();
         disableAction = false;
@@ -96,5 +96,14 @@ window.onkeydown = (event) => {
       break;
   }
 }
+
+//충돌 판정
+Events.on(engine, "collisionStart", (event) => {
+  event.pairs.forEach((collision) => {
+    if(collision.bodyA.index === collision.bodyB.index) {
+      World.remove(world, [collision.bodyA, collision.bodyB]); 
+    }
+  })
+})
 
 addFruit();
