@@ -31,6 +31,7 @@ const ground = Bodies.rectangle(310, 820, 620, 60, {
 })
 
 const topLine = Bodies.rectangle(310, 150, 620, 2, {
+  name: "topLine",
   isStatic: true,
   isSensor: true, //감지만 한다.
   render: {fillStyle: "#E6B143"},
@@ -43,9 +44,10 @@ Runner.run(engine);
 
 //과일 추가하기
 
-let currentFruit = null;
 let currentBody = null;
+let currentFruit = null;
 let disableAction = false; //1초동안 동작이 되지 않도록
+let interval = null;
 
 function addFruit() {
   const index = Math.floor(Math.random() * 5);
@@ -67,22 +69,35 @@ function addFruit() {
 }
 
 window.onkeydown = (event) => {
-  if(disableAction) {
+  if (disableAction) {
     return;
   }
+
   switch (event.code) {
     case "KeyA":
-      Body.setPosition(currentBody, {
-        x: currentBody.position.x - 10,
-        y: currentBody.position.y,
-      });
+      if (interval)
+        return;
+
+      interval = setInterval(() => {
+        if (currentBody.position.x - currentFruit.radius > 30)
+          Body.setPosition(currentBody, {
+            x: currentBody.position.x - 1,
+            y: currentBody.position.y,
+          });
+      }, 5);
       break;
 
     case "KeyD":
-      Body.setPosition(currentBody, {
-        x: currentBody.position.x + 10,
-        y: currentBody.position.y,
-      });
+      if (interval)
+        return;
+
+      interval = setInterval(() => {
+        if (currentBody.position.x + currentFruit.radius < 590)
+        Body.setPosition(currentBody, {
+          x: currentBody.position.x + 1,
+          y: currentBody.position.y,
+        });
+      }, 5);
       break;
 
     case "KeyS":
@@ -92,8 +107,17 @@ window.onkeydown = (event) => {
       setTimeout(() => {
         addFruit();
         disableAction = false;
-      },1000);
+      }, 1000);
       break;
+  }
+}
+
+window.onkeyup = (event) => {
+  switch (event.code) {
+    case "KeyA":
+    case "KeyD":
+      clearInterval(interval);
+      interval = null;
   }
 }
 
@@ -114,15 +138,18 @@ Events.on(engine, "collisionStart", (event) => {
         collision.collision.supports[0].x,
         collision.collision.supports[0].y,
         newFruit.radius,
-        {
+        { 
           render: {
             sprite: {texture: `${newFruit.name}.png`}
           },
           index: index + 1,
         }
       )
-
       World.add(world, newBody);
+    }
+    if(!disableAction && 
+      (collision.bodyA.name === "topLine" || collision.bodyB.name === "topLine")) {
+      alert("Game Over");
     }
   })
 })
