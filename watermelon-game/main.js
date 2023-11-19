@@ -48,6 +48,7 @@ let currentBody = null;
 let currentFruit = null;
 let disableAction = false; //1초동안 동작이 되지 않도록
 let interval = null;
+let winCount = 0;
 
 function addFruit() {
   const index = Math.floor(Math.random() * 5);
@@ -128,6 +129,8 @@ Events.on(engine, "collisionStart", (event) => {
       const index = collision.bodyA.index;
       
       if(index === FRUITS.length - 1) {
+        winCount++;
+        console.log(`winCount: ${winCount}`);
         return;
       }
       World.remove(world, [collision.bodyA, collision.bodyB]); 
@@ -146,6 +149,15 @@ Events.on(engine, "collisionStart", (event) => {
         }
       )
       World.add(world, newBody);
+      if (index === FRUITS.length - 1) {
+        // 배열의 마지막 요소일 때
+        winCount++;
+        console.log(`winCount: ${winCount}`);
+        if(winCount === 2) {
+          alert("Game Win!!");
+        }
+        return;
+      }
     }
     if(!disableAction && 
       (collision.bodyA.name === "topLine" || collision.bodyB.name === "topLine")) {
