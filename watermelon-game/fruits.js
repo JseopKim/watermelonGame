@@ -44,3 +44,5 @@ const FRUITS = [
     radius: 300 / 2,
   },
 ];
+
+export { FRUITS }; // 모듈 내보낼때
