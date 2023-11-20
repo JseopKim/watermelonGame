@@ -1,18 +1,18 @@
 const FRUITS = [
   {
-    name: "00_cherry",
+    name: "00_blueberry",
     radius: 46 / 2,
   },
   {
-    name: "01_strawberry",
+    name: "01_tomato",
     radius: 55 / 2,
   },
   {
-    name: "02_grape",
+    name: "02_lemon",
     radius: 67 / 2,
   },
   {
-    name: "03_gyool",
+    name: "03_lime",
     radius: 81 / 2,
   },
   {
@@ -20,19 +20,19 @@ const FRUITS = [
     radius: 97 / 2,
   },
   {
-    name: "05_apple",
+    name: "05_grapefruit",
     radius: 117 / 2,
   },
   {
-    name: "06_pear",
+    name: "06_kiwi",
     radius: 142 / 2,
   },
   {
-    name: "07_peach",
+    name: "07_pineapple",
     radius: 171 / 2,
   },
   {
-    name: "08_pineapple",
+    name: "08_coconut",
     radius: 206 / 2,
   },
   {
