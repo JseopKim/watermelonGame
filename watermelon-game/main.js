@@ -1,6 +1,13 @@
 import {Body, Engine, Runner, Render, Bodies, World, Events} from "matter-js";
 import { FRUITS } from "./fruits.js";
 
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const audioElement = new Audio();
+audioElement.src = '/bgm.mp3';
+
+const source = audioContext.createMediaElementSource(audioElement);
+source.connect(audioContext.destination);
+
 const engine = Engine.create();
 const render = Render.create({
   engine,
@@ -50,6 +57,14 @@ let disableAction = false; //1초동안 동작이 되지 않도록
 let interval = null;
 let winCount = 0;
 
+function playAudio() {
+  audioContext.resume().then(() => {
+    audioElement.play();
+    // 이벤트 리스너를 한 번만 실행하도록 제거
+    window.removeEventListener("click", playAudio);
+  });
+}
+
 function addFruit() {
   const index = Math.floor(Math.random() * 5);
   const fruit = FRUITS[index];
@@ -68,6 +83,8 @@ function addFruit() {
 
   World.add(world, body);
 }
+
+window.addEventListener("click", playAudio);
 
 window.onkeydown = (event) => {
   if (disableAction) {
