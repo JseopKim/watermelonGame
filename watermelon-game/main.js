@@ -56,6 +56,15 @@ let currentFruit = null;
 let disableAction = false; //1초동안 동작이 되지 않도록
 let interval = null;
 let winCount = 0;
+let playBox = document.createElement("div");
+let gameBox = document.getElementById("app");
+gameBox.appendChild(playBox);
+
+playBox.style.width = "100px";
+playBox.style.height = "40px";
+playBox.style.backgroundColor = "#888888";
+playBox.style.position = "fixed";
+playBox.style.left = "530px";
 
 function playAudio() {
   audioContext.resume().then(() => {
